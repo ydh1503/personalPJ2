@@ -1,5 +1,19 @@
 import mongoose from 'mongoose';
 
+const ItemStatSchema = new mongoose.Schema(
+  {
+    health: {
+      type: Number,
+      default: 0,
+    },
+    power: {
+      type: Number,
+      default: 0,
+    },
+  },
+  { _id: false }
+);
+
 const ItemSchema = new mongoose.Schema({
   item_code: {
     type: Number,
@@ -11,7 +25,7 @@ const ItemSchema = new mongoose.Schema({
     required: true, // 필수요소 - 아이템 명
   },
   item_stat: {
-    type: mongoose.Schema.Types.Mixed, // 다양한 타입 저장 가능, 객체 배열 JSON으로 사용
+    type: ItemStatSchema, // 서브Schema(ItemStatSchema) 선언 및 사용
   },
 });
 

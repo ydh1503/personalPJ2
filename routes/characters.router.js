@@ -39,15 +39,15 @@ router.post('/characters', async (req, res) => {
 
 // 캐릭터 삭제 API
 router.delete('/characters/:character_id', async (req, res) => {
-  const id = req.params.character_id;
+  const { character_id } = req.params;
 
-  if (isNaN(id)) {
+  if (isNaN(character_id)) {
     return res
       .status(400)
       .json({ errorMessage: '데이터 형식이 올바르지 않습니다.' });
   }
 
-  const character = await Character.findOne({ character_id: id }).exec();
+  const character = await Character.findOne({ character_id }).exec();
 
   if (!character) {
     return res
@@ -57,7 +57,7 @@ router.delete('/characters/:character_id', async (req, res) => {
 
   const name = character.name;
 
-  await Character.deleteOne({ character_id: id }).exec();
+  await Character.deleteOne({ character_id }).exec();
 
   return res
     .status(200)
