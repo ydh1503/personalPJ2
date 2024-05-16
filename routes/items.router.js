@@ -1,20 +1,20 @@
-import express from "express";
-import Item from "../schemas/items.schema.js";
+import express from 'express';
+import Item from '../schemas/items.schema.js';
 
 const router = express.Router();
 
 // 아이템 생성 API
-router.post("/items", async (req, res) => {
+router.post('/items', async (req, res) => {
   const { item_code, item_name, item_stat } = req.body;
 
   if (!item_code || !item_name) {
     return res
       .status(400)
-      .json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+      .json({ errorMessage: '데이터 형식이 올바르지 않습니다.' });
   } else if (await Item.findOne({ item_code }).exec()) {
     return res
       .status(404)
-      .json({ errorMessage: "이미 존재하는 아이템 코드입니다." });
+      .json({ errorMessage: '이미 존재하는 아이템 코드입니다.' });
   }
 
   const item = new Item({
@@ -38,13 +38,13 @@ router.post("/items", async (req, res) => {
 });
 
 // 아이템 수정 API
-router.patch("/items/:item_code", async (req, res) => {
+router.patch('/items/:item_code', async (req, res) => {
   const { item_code } = req.params;
 
   if (isNaN(item_code)) {
     return res
       .status(400)
-      .json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+      .json({ errorMessage: '데이터 형식이 올바르지 않습니다.' });
   }
 
   const { item_name, item_stat } = req.body;
@@ -52,7 +52,7 @@ router.patch("/items/:item_code", async (req, res) => {
   if (!item_name && !item_stat) {
     return res
       .status(400)
-      .json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+      .json({ errorMessage: '데이터 형식이 올바르지 않습니다.' });
   }
 
   const currentItem = await Item.findOne({ item_code }).exec();
@@ -60,7 +60,7 @@ router.patch("/items/:item_code", async (req, res) => {
   if (!currentItem) {
     return res
       .status(404)
-      .json({ errorMessage: "아이템 조회에 실패하였습니다." });
+      .json({ errorMessage: '아이템 조회에 실패하였습니다.' });
   }
 
   const baseData = {
@@ -86,8 +86,8 @@ router.patch("/items/:item_code", async (req, res) => {
 });
 
 // 아이템 목록 조회 API
-router.get("/items", async (req, res) => {
-  const items = await Item.find().sort("item_code").exec();
+router.get('/items', async (req, res) => {
+  const items = await Item.find().sort('item_code').exec();
 
   const data = [];
   for (const item of items) {
@@ -101,13 +101,13 @@ router.get("/items", async (req, res) => {
 });
 
 // 아이템 상세 조회 API
-router.get("/items/:item_code", async (req, res) => {
+router.get('/items/:item_code', async (req, res) => {
   const { item_code } = req.params;
 
   if (isNaN(item_code)) {
     return res
       .status(400)
-      .json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+      .json({ errorMessage: '데이터 형식이 올바르지 않습니다.' });
   }
 
   const currentItem = await Item.findOne({ item_code }).exec();
@@ -115,7 +115,7 @@ router.get("/items/:item_code", async (req, res) => {
   if (!currentItem) {
     return res
       .status(404)
-      .json({ errorMessage: "아이템 조회에 실패하였습니다." });
+      .json({ errorMessage: '아이템 조회에 실패하였습니다.' });
   }
 
   const data = {

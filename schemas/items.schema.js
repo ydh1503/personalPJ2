@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const ItemSchema = new mongoose.Schema({
   item_code: {
@@ -15,5 +15,5 @@ const ItemSchema = new mongoose.Schema({
   },
 });
 
-// CharacterSchema를 바탕으로 Character모델을 생성하여, 외부로 내보냅니다.
-export default mongoose.model("Item", ItemSchema);
+// ItemSchema를 바탕으로 Item모델을 생성하여, 외부로 내보냅니다.
+export default mongoose.model('Item', ItemSchema);

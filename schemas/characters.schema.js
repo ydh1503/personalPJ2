@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const CharacterSchema = new mongoose.Schema({
   character_id: {
@@ -22,4 +22,4 @@ const CharacterSchema = new mongoose.Schema({
 });
 
 // CharacterSchema를 바탕으로 Character모델을 생성하여, 외부로 내보냅니다.
-export default mongoose.model("Character", CharacterSchema);
+export default mongoose.model('Character', CharacterSchema);
