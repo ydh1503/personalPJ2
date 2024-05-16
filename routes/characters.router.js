@@ -10,7 +10,7 @@ router.post("/characters", async (req, res) => {
   if (!name) {
     return res
       .status(400)
-      .json({ errorMessage: "캐릭터 명이 기입되지 않았습니다." });
+      .json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
   } else if (await Character.findOne({ name: name }).exec()) {
     return res
       .status(404)
@@ -20,56 +20,74 @@ router.post("/characters", async (req, res) => {
   const characterMaxId = await Character.findOne().sort("-character_id").exec();
   const id = characterMaxId ? characterMaxId.character_id + 1 : 1;
 
-  const HEALTH = 500;
-  const POWER = 100;
-
   const character = new Character({
-    id,
+    character_id: id,
     name,
-    HEALTH,
-    POWER,
   });
 
   await character.save();
 
-  return res.status(201).json({ id: character.character_id });
+  const data = {
+    character_id: character.character_id,
+  };
+
+  return res.status(201).json({
+    message: `새로운 캐릭터 '${character.name}'를 생성하셨습니다!`,
+    data,
+  });
 });
 
 // 캐릭터 삭제 API
 router.delete("/characters/:character_id", async (req, res) => {
-  const { id } = req.params;
+  const id = req.params.character_id;
 
-  const character = await Character.findById(id).exec();
+  if (isNaN(id)) {
+    return res
+      .status(400)
+      .json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+  }
+
+  const character = await Character.findOne({ character_id: id }).exec();
 
   if (!character) {
     return res
       .status(404)
-      .json({ errorMessage: "존재하지 않는 캐릭터 입니다." });
+      .json({ errorMessage: "캐릭터 조회에 실패하였습니다." });
   }
+
+  const name = character.name;
 
   await Character.deleteOne({ character_id: id }).exec();
 
-  return res.status(200).json({});
+  return res
+    .status(200)
+    .json({ message: `캐릭터 '${name}'를 삭제하였습니다.` });
 });
 
 // 캐릭터 상세 조회 API
 router.get("/characters/:character_id", async (req, res) => {
-  const { id } = req.params;
+  const { character_id } = req.params;
 
-  const currentCharacter = await Character.findById(id).exec();
+  if (isNaN(character_id)) {
+    return res
+      .status(400)
+      .json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+  }
+
+  const currentCharacter = await Character.findOne({ character_id }).exec();
 
   if (!currentCharacter) {
     return res
       .status(404)
-      .json({ errorMessage: "존재하지 않는 캐릭터입니다." });
+      .json({ errorMessage: "캐릭터 조회에 실패하였습니다." });
   }
 
-  const character = {
+  const data = {
     name: currentCharacter.name,
     health: currentCharacter.health,
     power: currentCharacter.power,
   };
-  return res.status(200).json({ character });
+  return res.status(200).json({ data });
 });
 
 export default router;
