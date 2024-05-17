@@ -2,6 +2,7 @@ import express from 'express';
 import connect from './schemas/index.js';
 import CharacterRouter from './routes/characters.router.js';
 import ItemRouter from './routes/items.router.js';
+import EquipRouter from './routes/equips.router.js';
 
 const app = express();
 const PORT = 3000;
