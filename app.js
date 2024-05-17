@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
   `);
 });
 
-app.use('/api', [CharacterRouter, ItemRouter]);
+app.use('/api', [CharacterRouter, ItemRouter, EquipRouter]);
 
 app.listen(PORT, () => {
   console.log(PORT, '포트로 서버가 열렸어요!');
